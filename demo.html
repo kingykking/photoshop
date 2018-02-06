@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .gallery {
+            width:100vw;
+            height:100vh;
+            display: flex;
+            flex-flow: row wrap;
+        }
+        .item {
+            height: 33vh;
+            width: 33vw;
+            flex: 1;
+        }
+        .item img {
+            height: 33vh;
+            width: 33vw;
+        }
+        .preview.item {
+            margin: auto;
+            display: flex;
+            width:100vw;
+            height:100vh;
+        }
+        .preview.item img {
+            width:100vw;
+            height:100vh;
+            width:initial;
+        }
+        .item.preview {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <div class="item"><img src="./images/1.jpg" alt=""></div>
+        <div class="item"><img src="./images/2.jpg" alt=""></div>
+        <div class="item"><img src="./images/3.jpg" alt=""></div>
+        <div class="item"><img src="./images/4.jpg" alt=""></div>
+        <div class="item"><img src="./images/5.jpg" alt=""></div>
+        <div class="item"><img src="./images/6.jpg" alt=""></div>
+        <div class="item"><img src="./images/7.jpg" alt=""></div>
+        <div class="item"><img src="./images/8.jpg" alt=""></div>
+        <div class="item"><img src="./images/9.jpg" alt=""></div>   
+    </div>
+</body>
+<script>
+    var container = document.getElementsByClassName('gallery')[0];
+    container.addEventListener('click',function(e){
+        var clazzName = e.target.parentNode.classList;
+        var preview = "preview";
+        var ox ;
+        if(clazzName.contains(preview)) {
+            clazzName.remove(preview);
+            container.style.width = 100+'vw';
+        }
+        else {
+            clazzName.add(preview);
+            container.style.width = 100*container.childElementCount+'vw';
+        }
+    })
+    container.addEventListener('touchstart',function(e){
+        ox = e.changedTouches[0].pageX;
+        e.target.parentNode.classList.remove("animation");
+        console.log(e)
+    })
+    container.addEventListener('touchmove',function(e) {
+        var dx = e.changedTouches[0].pageX - ox;
+        move(dx,e)
+    })
+    function move(dx,e) {
+        e.target.style.transform = `translate(${dx}px,0)`;
+    }
+    container.addEventListener('touchend',function(e) {
+        if(Math.abs(e.changedTouches[0].pageX) > (e.target.style.width/2))
+            move(e.target.style.width-e.changedTouches[0].pageX,e)
+        else {
+            move(-e.changedTouches[0].pageX,e)
+        }
+    })
+</script>
+</html>
